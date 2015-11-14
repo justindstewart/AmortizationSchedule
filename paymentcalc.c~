@@ -1,0 +1,72 @@
+//=======1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
+//Author information
+//  Author name: Justin Stewart
+//  Author email: scubastew@csu.fullerton.edu
+//  Author location: Long Beach, Calif.
+//Course information
+//  Course number: CPSC240
+//  Assignment number: 3
+//  Due date: 2015-Sep-29
+//Project information
+//  Project title: Amortization Schedule
+//  Purpose: This project will prompt the user for a loan amount(principle), an interest rate, and a time frame of payback for the loan (in months) and return to the user
+//	     an amortization schedule that indicates to the user monthly payments and how much of each payment is paying interest vs. the principle.
+//  Status: In progress.
+//  Project files: amortdriver.c, amortmain.asm
+//Module information
+//  File name: paymentcalc.c
+//  This module's call name: paymentcalc(double, double, long)  This module is invoked by the assembly program.
+//  Language: C
+//  Date last modified: 2015-Sep-22
+//  Purpose: This module is the function to calculate the monthly payments given a periodic interest rate, loan amount and time frame. Called by assembly program.
+//  Status: Executed with no errors.
+//  Future enhancements: None planned
+//Translator information (Tested in Linux shell)
+//  Gnu compiler: gcc -c -m64 -Wall -std=c99 -l paymentcalc.lis -o paymentcalc.o paymentcalc.c
+//  Gnu linker:   gcc -m64 -o amort.out amortdriver.o amortmain.o paymentcalc.o
+//  Execute:      paymentcalc(double, double, long)
+//References and credits
+//  No references: this module is standard C language
+//Format information
+//  Page width: 172 columns
+//  Begin comments: 61
+//  Optimal print specification: Landscape, 7 points, monospace, 8½x11 paper
+//
+//===== Begin code area ===================================================================================================================================================
+
+#include <stdio.h>
+#include <stdint.h>
+#include <math.h>
+
+//paymentcalc - Receives a periodic interest rate, a loan amount and a time. It will then calculate the monthly payment and pass it back to the calling program. 
+double paymentcalc(double, double, long);
+
+//paymentcalc - Definition.
+double paymentcalc(double rate, 	//CALC - Precondition - Rate has been made into periodic interest rate for calculations.
+		   double loan, 	//CALC - Precondition - Loan is passed in from calling program.
+		   long time)		//CALC - Precondition - Time is passed in from calling program.
+{
+	double payments = -99.9;	//CALC - Holds the initialized value of the calculated payment.
+	
+	//IF - Checks if received time is zero, sets payment amount equal to loan amount. Otherwise, calculates the monthly payment based on interest amount.
+	if(time == 0)
+	{
+		payments = loan;
+	}
+	else
+	{	
+		//IF - Checks if received interest is greater than zero, if it is it calculates the monthly payment regularly. Otherwise, payment = loan/time.
+		if(rate > 0)
+	 	{
+	 		payments = loan*((rate*pow((1+rate), time))/(pow((1+rate), time)-1));
+	 	}
+	 	else
+	 	{
+	 		payments = loan / time;
+	 	}//END IF
+	}//END IF
+ 
+ 	return payments;
+}//End of main
+
+//=======1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
